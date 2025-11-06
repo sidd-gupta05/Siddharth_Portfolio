@@ -40,11 +40,67 @@
   letter-spacing: 1px;
   font-weight: 500;
 }
-.navbar-title {
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.2px;
+
+/* Logo Styles */
+.navbar-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
 }
+
+.logo-text {
+  font-family: "Geist", "SF Mono", "Monaco", "Consolas", "Ubuntu Mono",
+    monospace;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.logo-name {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  position: relative;
+}
+
+/* Hover Effects */
+.navbar-logo:hover .logo-text {
+  transform: scale(1.2);
+}
+
+.navbar-logo:hover .logo-name {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Optional: Add a subtle glow effect */
+.logo-text::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* .navbar-logo:hover .logo-text::before {
+  opacity: 0.3;
+  filter: blur(8px);
+} */
+
 @media only screen and (min-width: 500px) {
   .header {
     padding: 20px 0px;
@@ -57,15 +113,17 @@
   .header ul li {
     color: #eae5ec;
   }
-  .navbar-title {
-    font-size: 16px;
+  .logo-text {
+    font-size: 20px;
   }
 }
+
 @media only screen and (min-width: 900px) {
   .navbar-connect {
     display: block;
   }
 }
+
 @media only screen and (min-width: 1200px) {
   .header {
     padding: 35px 0px;
@@ -77,7 +135,25 @@
   .navbar-connect {
     font-size: 16px;
   }
-  .navbar-title {
-    font-size: 18px;
+  .logo-text {
+    font-size: 22px;
   }
 }
+
+/* Alternative Simpler Version (if you prefer) */
+/*
+.logo-text {
+  font-family: 'Geist', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--accentColor);
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.navbar-logo:hover .logo-text {
+  color: #ffffff;
+  text-shadow: 0 0 10px var(--accentColor);
+}
+*/

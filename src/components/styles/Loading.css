@@ -193,11 +193,74 @@
   top: 0;
   color: var(--backgroundColor);
 }
-.loader-title {
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.2px;
+
+/* Logo Styles for Loading Screen */
+.loader-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  margin-top: -70px;
 }
+
+.logo-text {
+  font-family: "Geist", "SF Mono", "Monaco", "Consolas", "Ubuntu Mono",
+    monospace;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #000000;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Remove the ::before and ::after and use actual elements */
+.logo-brackets {
+  color: #000000; /* Black brackets */
+}
+
+.logo-name {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  margin: 0 2px; /* Small spacing around the name */
+}
+
+/* Hover Effects */
+.loader-logo:hover .logo-text {
+  transform: scale(1.2);
+}
+
+.loader-logo:hover .logo-name {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Optional: Add a subtle glow effect */
+.logo-glow {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* .loader-logo:hover .logo-glow {
+  opacity: 0.3;
+  filter: blur(8px);
+} */
+
 @keyframes blink {
   0% {
     opacity: 0;
@@ -349,15 +412,15 @@
   .loading-header {
     padding: 20px 0px;
   }
-  .loader-title {
-    font-size: 16px;
+  .logo-text {
+    font-size: 20px;
   }
 }
 @media only screen and (min-width: 1200px) {
   .loading-header {
     padding: 35px 0px;
   }
-  .loader-title {
-    font-size: 18px;
+  .logo-text {
+    font-size: 22px;
   }
 }
