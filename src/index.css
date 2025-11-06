@@ -15,9 +15,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  user-select: none;
-  -webkit-user-select: none;
   -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
   --accentColor: #c2a4ff;
   --backgroundColor: #0b080c;
   --vh: 100vh;
