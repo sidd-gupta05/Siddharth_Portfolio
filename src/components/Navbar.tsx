@@ -21,41 +21,75 @@ const Navbar = () => {
     });
 
     smoother.scrollTop(0);
-    smoother.paused(true);
+    smoother.paused(false);
 
-    let links = document.querySelectorAll(".header ul a");
-    links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
+    const handleNavClick = (e: MouseEvent) => {
+      if (window.innerWidth > 1024) {
+        e.preventDefault();
+        const elem = e.currentTarget as HTMLAnchorElement;
+        const section = elem.getAttribute("data-href");
+
+        if (section) {
+          const targetElement = document.querySelector(section);
+          if (targetElement) {
+            smoother.scrollTo(section, true, "top top");
+          } else {
+            console.warn(`Section ${section} not found on page`);
+            smoother.scrollTo(0);
+          }
         }
-      });
+      }
+    };
+
+    const links = document.querySelectorAll(".header ul a");
+    links.forEach((elem) => {
+      const element = elem as HTMLAnchorElement;
+      element.addEventListener("click", handleNavClick);
     });
-    window.addEventListener("resize", () => {
+
+    const handleResize = () => {
       ScrollSmoother.refresh(true);
-    });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      links.forEach((elem) => {
+        const element = elem as HTMLAnchorElement;
+        element.removeEventListener("click", handleNavClick);
+      });
+      window.removeEventListener("resize", handleResize);
+
+      if (smoother) {
+        smoother.kill();
+      }
+    };
   }, []);
+
   return (
     <>
       <div className="header">
-        <a href="/#" className="navbar-title" data-cursor="disable">
-          Logo
+        <a href="/#" className="navbar-logo" data-cursor="disable">
+          <span className="logo-text">
+            &lt;<span className="logo-name">SIDDHARTH.dev</span>/&gt;
+          </span>
         </a>
         <a
-          href="mailto:example@mail.com"
+          href="mailto:siddharthgupta2482005@gmail.com"
           className="navbar-connect"
           data-cursor="disable"
         >
-          example@mail.com
+          siddharthgupta2482005@gmail.com
         </a>
         <ul>
           <li>
             <a data-href="#about" href="#about">
               <HoverLinks text="ABOUT" />
+            </a>
+          </li>
+          <li>
+            <a data-href="#whatIDo" href="#whatIDo">
+              <HoverLinks text="What I DO" />
             </a>
           </li>
           <li>
