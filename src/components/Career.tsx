@@ -19,10 +19,10 @@ const Career = () => {
       if (!timeline || !dot || careerBoxes.length === 0) return;
 
       // Calculate positions for each career box
-      careerBoxes.forEach((box: any, index: number) => {
+      careerBoxes.forEach((box: any) => {
         const boxTop = box.offsetTop;
         const boxHeight = box.offsetHeight;
-        const progress = index / (careerBoxes.length - 1);
+        // const progress = index / (careerBoxes.length - 1);
 
         ScrollTrigger.create({
           trigger: box,

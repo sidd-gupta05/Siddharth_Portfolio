@@ -1,4 +1,4 @@
-import { MdArrowOutward, MdCopyright } from "react-icons/md";
+import { MdCopyright } from "react-icons/md";
 import { Twitter, Github, Linkedin, Instagram } from "lucide-react";
 import "./styles/Contact.css";
 
