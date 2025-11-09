@@ -11,25 +11,34 @@ const Career = () => {
   const careerInfoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    const updateTimeline = () => {
       const careerBoxes = gsap.utils.toArray(".career-info-box");
       const timeline = timelineRef.current;
       const dot = dotRef.current;
 
       if (!timeline || !dot || careerBoxes.length === 0) return;
 
+      // Kill existing ScrollTriggers to avoid duplicates
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger && careerBoxes.includes(trigger.trigger)) {
+          trigger.kill();
+        }
+      });
+
+      // Reset positions
+      gsap.set(timeline, { height: "0px" });
+      gsap.set(dot, { y: 0 });
+
       // Calculate positions for each career box
       careerBoxes.forEach((box: any) => {
         const boxTop = box.offsetTop;
         const boxHeight = box.offsetHeight;
-        // const progress = index / (careerBoxes.length - 1);
 
         ScrollTrigger.create({
           trigger: box,
-          start: "top 40%",
-          end: "bottom 40%",
+          start: "top 50%",
+          end: "bottom 50%",
           onEnter: () => {
-            // Move timeline and dot to current box position
             gsap.to(timeline, {
               height: `${boxTop + boxHeight / 2}px`,
               duration: 0.5,
@@ -43,7 +52,6 @@ const Career = () => {
             });
           },
           onEnterBack: () => {
-            // Move timeline and dot to current box position when scrolling up
             gsap.to(timeline, {
               height: `${boxTop + boxHeight / 2}px`,
               duration: 0.5,
@@ -68,9 +76,30 @@ const Career = () => {
         gsap.set(timeline, { height: `${firstBoxTop + firstBoxHeight / 2}px` });
         gsap.set(dot, { y: firstBoxTop + firstBoxHeight / 2 });
       }
+    };
+
+    // Initial setup
+    const ctx = gsap.context(() => {
+      updateTimeline();
     });
 
-    return () => ctx.revert();
+    // Update on resize with debounce
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        updateTimeline();
+        ScrollTrigger.refresh();
+      }, 250);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      ctx.revert();
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
   }, []);
 
   return (

@@ -3,10 +3,25 @@ import WorkImage from "./WorkImage";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useRef, useEffect } from "react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const Work = () => {
+  const isMobile = useRef(false);
+
+  useEffect(() => {
+    // Check if mobile on initial load
+    isMobile.current = window.innerWidth <= 768;
+
+    const checkMobile = () => {
+      isMobile.current = window.innerWidth <= 768;
+    };
+
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   useGSAP(() => {
     let timeline: gsap.core.Timeline;
     let resizeTimeout: NodeJS.Timeout;
@@ -18,6 +33,14 @@ const Work = () => {
       }
       ScrollTrigger.getById("work")?.kill();
 
+      // Don't initialize horizontal scroll on mobile
+      if (isMobile.current) {
+        // Initialize mobile animations
+        initMobileAnimations();
+        return;
+      }
+
+      // Desktop horizontal scroll animation (your existing code)
       const box = document.getElementsByClassName("work-box");
       if (box.length === 0) return;
 
@@ -44,13 +67,66 @@ const Work = () => {
           anticipatePin: 1,
           id: "work",
           invalidateOnRefresh: true,
-          markers: false, // Set to true for debugging
+          markers: false,
         },
       });
 
       timeline.to(".work-flex", {
         x: -translateX,
         ease: "none",
+      });
+    }
+
+    function initMobileAnimations() {
+      const workBoxes = gsap.utils.toArray(".work-box");
+
+      workBoxes.forEach((box: any, index: number) => {
+        const isEven = index % 2 === 0;
+
+        // Set initial positions
+        gsap.set(box, {
+          x: isEven ? -100 : 100,
+          opacity: 0,
+        });
+
+        // Create scroll trigger for each box
+        ScrollTrigger.create({
+          trigger: box,
+          start: "top 80%",
+          end: "bottom 20%",
+          onEnter: () => {
+            gsap.to(box, {
+              x: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.out",
+            });
+          },
+          onEnterBack: () => {
+            gsap.to(box, {
+              x: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.out",
+            });
+          },
+          onLeave: () => {
+            gsap.to(box, {
+              x: isEven ? -50 : 50,
+              opacity: 0,
+              duration: 0.6,
+              ease: "power2.in",
+            });
+          },
+          onLeaveBack: () => {
+            gsap.to(box, {
+              x: isEven ? -50 : 50,
+              opacity: 0,
+              duration: 0.6,
+              ease: "power2.in",
+            });
+          },
+        });
       });
     }
 
@@ -102,6 +178,11 @@ const Work = () => {
       if (timeline) {
         timeline.kill();
       }
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger?.classList?.contains("work-box")) {
+          trigger.kill();
+        }
+      });
       ScrollTrigger.getById("work")?.kill();
       window.removeEventListener("resize", handleResize);
       clearTimeout(resizeTimeout);
