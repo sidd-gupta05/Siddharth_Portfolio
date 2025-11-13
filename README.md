@@ -182,7 +182,6 @@ src/
 └── main.tsx
 
 
-
 📱 Browser Support
 
     Chrome (latest)
