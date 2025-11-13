@@ -122,6 +122,7 @@ Local Development
     bash
 
 git clone https://github.com/sidd-gupta05/Siddharth_Portfolio.git
+
 cd Siddharth_Portfolio
 
 Install dependencies
